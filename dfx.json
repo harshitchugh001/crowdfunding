@@ -1,0 +1,23 @@
+{
+  "canisters": {
+    "crowdfunding": {
+      "type": "motoko",
+      "main": "./crowdfunding/src/main.mo"
+    },
+    "login": {
+      "type": "motoko",
+      "main": "./crowdfunding/src/login/login.mo"
+    },
+    "product": {
+      "type": "motoko",
+      "main": "./crowdfunding/src/product/product.mo"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": "mops sources"
+    }
+  },
+  "version": 1
+}
