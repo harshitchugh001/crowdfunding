@@ -82,7 +82,7 @@ module {
         switch (storedUser) {
             case (?storedUserData) {
                 if (Text.equal(user.userPassword,storedUserData.userPassword) and Text.equal(user.userEmail, storedUserData.userEmail)) {
-                    return "Login success";
+                    return "Loginsuccess " #storedUserData.userId;
                 } else {
                     throw Error.reject("Invalid user credentials");
                 };

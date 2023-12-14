@@ -5,8 +5,10 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createNativeStackNavigator();
+// const Drawer = createDrawerNavigator();
 
 const AuthStack = () => {
   return (
@@ -20,3 +22,7 @@ const AuthStack = () => {
 };
 
 export default AuthStack;
+
+
+
+

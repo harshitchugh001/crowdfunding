@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,6 +11,7 @@ import { login } from "../declarations/login";
 
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
+import { setItem,getItem } from '../helper';
 
 
 
@@ -20,6 +21,17 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isLogin, setisLogin] = useState(false);
 
+
+
+  console.log('test')
+  const checkUserId = async () => {
+    const userId = await getItem('userId');
+    console.log("helo");
+    if (userId) {
+      navigation.navigate('Home');
+      return true;
+    }
+  };
 
 
   const loginfunc = async () => {
@@ -33,9 +45,13 @@ const LoginScreen = ({ navigation }) => {
       const loginuser = await login.login(userInfo);
 
       console.log(loginuser);
-      if(loginuser==='Login success'){
-        ToastAndroid.show('login success',ToastAndroid.SHORT);
+      const [status, userId] = loginuser.split(' ');
+      console.log(status);
+      console.log(userId);
 
+      if (status === 'Loginsuccess') {
+        ToastAndroid.show('login success',ToastAndroid.SHORT);
+        await setItem('userId', userId);
         navigation.navigate("Home");
         setisLogin(false);
       }
@@ -45,6 +61,11 @@ const LoginScreen = ({ navigation }) => {
 
     }
   }
+  useEffect(() => {
+    
+    checkUserId();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ paddingHorizontal: 25 }}>
@@ -82,9 +103,6 @@ const LoginScreen = ({ navigation }) => {
         <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
           Or, login with ...
         </Text>
-
-
-
         <View
           style={{
             flexDirection: 'row',

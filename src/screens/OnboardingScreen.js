@@ -1,10 +1,30 @@
-import React from 'react'
+// import React ,{useEffect}from 'react'
+import React from 'react';
 import { SafeAreaView, View, Text, TouchableOpacity,Image,StyleSheet} from 'react-native';
 import SplashScreen from '../assets/images/splashscreen.png';
+
+import {getItem} from '../helper';
 
 
 
 const OnboardingScreen = ({navigation}) => {
+
+  
+  
+  const checkUserId = async () => {
+    const userId = await getItem('userId');
+    console.log("helo");
+    if (userId) {
+      navigation.navigate('Home');
+      return true;
+    }else{
+      navigation.navigate('Login');
+    }
+  };
+
+
+
+
   return (
     <SafeAreaView
       style={{
@@ -40,7 +60,7 @@ const OnboardingScreen = ({navigation}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}
-        onPress={() => navigation.navigate('Login')}>
+        onPress={() => checkUserId()}>
         <Text
           style={{
             color: 'white',
