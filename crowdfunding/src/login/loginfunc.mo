@@ -42,7 +42,7 @@ module {
         };
     };
     //fetch user
-    public func fetchuser(db : CanDB.DB, userEmail : Text) : async ?Type.storedUserInfo {
+    public  func fetchuser(db : CanDB.DB, userEmail : Text) : async ?Type.storedUserInfo {
         let data = switch (CanDB.get(db, {sk = userEmail})) {
             case null {null};
             case (?userEntity) {unwrapUserDetail(userEntity)};

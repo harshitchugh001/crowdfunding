@@ -1,0 +1,57 @@
+type project1 = 
+ record {
+   contactlinks: vec text;
+   fundingTarget: text;
+   fundusageplan: text;
+   objectives: text;
+   projectDescription: text;
+   projectImages: text;
+   projectTitle: text;
+   risksandchallanges: text;
+   socialmedialinks: vec text;
+   teamInformation: text;
+ };
+type Scanproject = 
+ record {
+   nextKey: opt text;
+   projects: vec Project;
+ };
+type ScalingOptions = 
+ record {
+   autoScalingHook: AutoScalingCanisterSharedFunctionHook;
+   sizeLimit: ScalingLimitType;
+ };
+type ScalingLimitType = 
+ variant {
+   count: nat;
+   heapSize: nat;
+ };
+type Project = 
+ record {
+   contactlinks: vec text;
+   fundingTarget: text;
+   fundusageplan: text;
+   objectives: text;
+   projectDescription: text;
+   projectId: text;
+   projectImages: text;
+   projectTitle: text;
+   risksandchallanges: text;
+   socialmedialinks: vec text;
+   teamInformation: text;
+ };
+type Product = 
+ service {
+   getPK: () -> (text) query;
+   getprojectbyprojectId: (text) -> (opt Project);
+   projectadd: (text, project1) -> (text);
+   scanUsers: (text, text, nat, opt bool) -> (Scanproject);
+   skExists: (text) -> (bool) query;
+   transferCycles: () -> ();
+ };
+type AutoScalingCanisterSharedFunctionHook = func (text) -> (text);
+service : (record {
+             owners: opt vec principal;
+             partitionKey: text;
+             scalingOptions: ScalingOptions;
+           }) -> Product

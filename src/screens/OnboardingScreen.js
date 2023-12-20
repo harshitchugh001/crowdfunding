@@ -8,22 +8,16 @@ import {getItem} from '../helper';
 
 
 const OnboardingScreen = ({navigation}) => {
-
-  
-  
   const checkUserId = async () => {
     const userId = await getItem('userId');
     console.log("helo");
     if (userId) {
-      navigation.navigate('Home');
+      navigation.navigate('Drawer');
       return true;
     }else{
       navigation.navigate('Login');
     }
   };
-
-
-
 
   return (
     <SafeAreaView
@@ -77,7 +71,6 @@ const OnboardingScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-
   image: {
     width: 200, 
     height: 200, 

@@ -3,6 +3,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
 import AuthStack from './src/navigation/AuthStack';
+import Drawer from './src/navigation/Drawer';
 // import AppStack from './src/navigation/AppStack';
 
 
@@ -10,7 +11,7 @@ import AuthStack from './src/navigation/AuthStack';
 function App() {
   return (
     <NavigationContainer>
-      {/* <AppStack /> */}
+      {/* <Drawer></Drawer> */}
       <AuthStack />
     </NavigationContainer>
   );

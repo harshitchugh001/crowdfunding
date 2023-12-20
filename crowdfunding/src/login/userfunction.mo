@@ -41,7 +41,7 @@ module {
         };  
     };
 
-    public func getuserdetail(db : CanDB.DB,userId:Text) : async ?Type.userdetails {
+    public  func getuserdetail(db : CanDB.DB,userId:Text) : async ?Type.userdetails {
         let data =switch(CanDB.get(db,{sk=userId})){
             case null {null};
             case (?userdetail){unwraperuserdetail(userdetail)};
@@ -55,7 +55,7 @@ module {
 
     };
 
-    func unwraperuserdetail(entity:Entity.Entity) : ?Type.userdetails{
+    public func unwraperuserdetail(entity:Entity.Entity) : ?Type.userdetails{
         let {sk;attributes}=entity;
 
         let userId=Entity.getAttributeMapValueForKey(attributes,"userId");

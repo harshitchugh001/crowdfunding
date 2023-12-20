@@ -32,39 +32,87 @@ export const getItem = async (key) => {
   }
 };
 
+
+// Save user data to AsyncStorage
+export const saveUserData = async (userData) => {
+  try {
+    await setItem('userData', userData);
+  } catch (error) {
+    console.error('Error saving user data to AsyncStorage:', error);
+  }
+};
+
+// Retrieve user data from AsyncStorage
+export const getUserData = async () => {
+  try {
+    const userData = await getItem('userData');
+    return userData;
+  } catch (error) {
+    console.error('Error retrieving user data from AsyncStorage:', error);
+    return null;
+  }
+};
+
+
+
+
+///how to use get and save userdata object
+
+// const userData = {
+//   username: 'example_user',
+//   firstName: 'John',
+//   lastName: 'Doe',
+//   // Add other user data fields as needed
+// };
+
+// saveUserData(userData);
+
+// // Retrieve user data
+// const retrievedUserData = await getUserData();
+
+// if (retrievedUserData) {
+//   // Use the retrievedUserData as needed
+//   console.log('Retrieved user data:', retrievedUserData);
+// } else {
+//   console.log('User data not found in AsyncStorage.');
+// }
+
+
 // Authenticate user by storing data in AsyncStorage during sign-in
-export const authenticate = async (response, next) => {
-  await setItem('token', response.data.token);
-  console.log(response.data.user);
-  await setItem('user', response.data.user);
-  next();
-};
+// export const authenticate = async (response, next) => {
+//   await setItem('token', response.data.token);
+//   console.log(response.data.user);
+//   await setItem('user', response.data.user);
+//   next();
+// };
 
-// Check if the user is authenticated and get user info from AsyncStorage
-export const isAuth = async () => {
-  const token = await getItem('token');
-  if (token) {
-    const user = await getItem('user');
-    if (user) {
-      return user;
-    }
-  }
-  return false;
-};
+// // Check if the user is authenticated and get user info from AsyncStorage
+// export const isAuth = async () => {
+//   const token = await getItem('token');
+//   if (token) {
+//     const user = await getItem('user');
+//     if (user) {
+//       return user;
+//     }
+//   }
+//   return false;
+// };
 
-// Sign out the user by removing data from AsyncStorage
-export const signout = async (callback) => {
-  await removeItem('token');
-  await removeItem('user');
-  if (typeof callback === 'function') {
-    callback();
-  }
-};
+// // Sign out the user by removing data from AsyncStorage
+// export const signout = async (callback) => {
+//   await removeItem('token');
+//   await removeItem('user');
+//   if (typeof callback === 'function') {
+//     callback();
+//   }
+// };
 
-// Update user info in AsyncStorage
-export const updateUser = async (response, next) => {
-  console.log('UPDATE USER IN AsyncStorage HELPERS', response);
-  const user = response.data;
-  await setItem('user', user);
-  next();
-};
+// // Update user info in AsyncStorage
+// export const updateUser = async (response, next) => {
+//   console.log('UPDATE USER IN AsyncStorage HELPERS', response);
+//   const user = response.data;
+//   await setItem('user', user);
+//   next();
+// };
+
+

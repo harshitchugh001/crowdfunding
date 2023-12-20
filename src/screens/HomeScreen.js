@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,34 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-
-
-
+import { getItem,getUserData} from '../helper';
+import { login } from "../declarations/login";
 
 export default function HomeScreen({navigation}) {
+  const [userData, setUserData] = useState(null);
+
+  
+  
+  const getData = async () => {
+    // const usertest=await getUserData();
+    // console.log("test",usertest); 
+    const userId = await getItem('userId');
+    const userDetail= await login.getuserdetail(userId);
+    console.log("home screen",userDetail);
+    if (userDetail && userDetail.length > 0) {
+      console.log("details present");
+      setUserData(userDetail[0]);
+     
+  } else {
+      console.log("details not present");
+      navigation.navigate("TakeDetails");
+  }
+  };
+
+  useEffect(() => {
+  getData();
+  }, []);
+  
   
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -25,7 +48,7 @@ export default function HomeScreen({navigation}) {
             marginBottom: 20,
           }}>
           <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-            Hello Harshit
+            Hello {userData? userData.firstname : 'user'}
           </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <ImageBackground
@@ -36,34 +59,12 @@ export default function HomeScreen({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            borderColor: '#C6C6C6',
-            borderWidth: 1,
-            borderRadius: 8,
-            paddingHorizontal: 10,
-            paddingVertical: 8,
-          }}>
-          <TextInput placeholder="Search" />
-        </View>
+        
 
-        <View
-          style={{
-            marginVertical: 15,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-            Listed Projects
-          </Text>
+      
           
-        </View>
-
-        <View style={{marginVertical: 20}}>
-
-
-        </View>
+    
+       
 
       </ScrollView>
     </SafeAreaView>

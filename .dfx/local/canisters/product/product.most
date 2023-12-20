@@ -1,0 +1,90 @@
+// Version: 1.0.0
+type AttributeKey = Text;
+type AttributeMap = Tree<AttributeKey, AttributeValue>;
+type AttributeValue =
+  {
+    #arrayBool : [Bool];
+    #arrayFloat : [Float];
+    #arrayInt : [Int];
+    #arrayText : [Text];
+    #blob : Blob;
+    #bool : Bool;
+    #candy : CandyShared;
+    #float : Float;
+    #int : Int;
+    #text : Text;
+    #tree : Tree<Text, AttributeValueRBTreeValue>;
+    #tuple : [AttributeValuePrimitive]
+  };
+type AttributeValuePrimitive =
+  {#bool : Bool; #float : Float; #int : Int; #text : Text};
+type AttributeValueRBTreeValue =
+  {
+    #arrayBool : [Bool];
+    #arrayFloat : [Float];
+    #arrayInt : [Int];
+    #arrayText : [Text];
+    #blob : Blob;
+    #bool : Bool;
+    #candy : CandyShared;
+    #float : Float;
+    #int : Int;
+    #text : Text;
+    #tuple : [AttributeValuePrimitive]
+  };
+type AutoScalingCanisterSharedFunctionHook = shared Text -> async Text;
+type BTree<K, V> = {order : Nat; var root : Node<K, V>; var size : Nat};
+type BTree__1<K, V> = BTree<K, V>;
+type CandyShared =
+  {
+    #Array : [CandyShared];
+    #Blob : Blob;
+    #Bool : Bool;
+    #Bytes : [Nat8];
+    #Class : [PropertyShared];
+    #Float : Float;
+    #Floats : [Float];
+    #Int : Int;
+    #Int16 : Int16;
+    #Int32 : Int32;
+    #Int64 : Int64;
+    #Int8 : Int8;
+    #Ints : [Int];
+    #Map : [(CandyShared, CandyShared)];
+    #Nat : Nat;
+    #Nat16 : Nat16;
+    #Nat32 : Nat32;
+    #Nat64 : Nat64;
+    #Nat8 : Nat8;
+    #Nats : [Nat];
+    #Option : ?CandyShared;
+    #Principal : Principal;
+    #Set : [CandyShared];
+    #Text : Text
+  };
+type Color = {#B; #R};
+type Data<K, V> = {var count : Nat; kvs : [var ?(K, V)]};
+type Internal<K, V> = {children : [var ?Node<K, V>]; data : Data<K, V>};
+type Leaf<K, V> = {data : Data<K, V>};
+type Node<K, V> = {#internal : Internal<K, V>; #leaf : Leaf<K, V>};
+type PK = Text;
+type PropertyShared = {immutable : Bool; name : Text; value : CandyShared};
+type RangeTree__1 = BTree__1<SK, AttributeMap>;
+type SK = Text;
+type ScalingLimitType = {#count : Nat; #heapSize : Nat};
+type ScalingOptions =
+  {
+    autoScalingHook : AutoScalingCanisterSharedFunctionHook;
+    sizeLimit : ScalingLimitType
+  };
+type Tree<K, V> = {#leaf; #node : (Color, Tree<K, V>, (K, ?V), Tree<K, V>)};
+actor {
+  stable db :
+    {
+      var count : Nat;
+      var data : RangeTree__1;
+      pk : PK;
+      var scalingOptions : ScalingOptions;
+      var scalingStatus : {#complete; #not_started; #started}
+    }
+};

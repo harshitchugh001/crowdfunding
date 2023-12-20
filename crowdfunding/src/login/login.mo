@@ -42,29 +42,37 @@ shared ({caller = owner}) actor class Login({
 
   //main code
 
-public func signUp(Info : Type.UserInfo) : async Text {
-  Debug.print(debug_show(db.pk));
-  return await Loginfunction.signUp(db,Info);
-};
+  public func signUp(Info : Type.UserInfo) : async Text {
+    Debug.print(debug_show (db.pk));
+    return await Loginfunction.signUp(db, Info);
+  };
 
-public func login (user: Type.userlogin) : async Text {
-  Debug.print(debug_show(db.pk));
-  return await Loginfunction.login(db,user);
-};
+  public func login(user : Type.userlogin) : async Text {
+    Debug.print(debug_show (db.pk));
+    return await Loginfunction.login(db, user);
+  };
 
+  public func userdetail(userId : Text, detail : Type.userdetails) : async Text {
+    Debug.print(debug_show (db.pk));
+    // Debug.print(debug_show(db.scalingOptions.autoScallingHook));
+    return await Userfunction.userdetail(db, userId, detail);
+  };
 
-public func userdetail(userId:Text,detail:Type.userdetails) : async Text {
-  Debug.print(debug_show(db.pk));
-  // Debug.print(debug_show(db.scalingOptions.autoScallingHook));
-  return await Userfunction.userdetail(db,userId,detail);
-};
+  public query func getuserdetail(userId : Text) : async ?Type.userdetails {
+    let data = switch (CanDB.get(db, {sk = userId})) {
+      case null {null};
+      case (?userdetail) {Userfunction.unwraperuserdetail(userdetail)};
+    };
+    Debug.print(debug_show (data));
 
-public func getuserdetail(userId:Text) : async ?Type.userdetails {
-  return await Userfunction.getuserdetail(db,userId);
-};
+    switch (data) {
+      case (?value) {?value};
+      case (null) {null};
+    };
+  };
 
-public func addprojectId(projectId:Text,userId:Text) : async () {
-  return await Userfunction.addprojectId(db,projectId,userId);
-}
+  public func addprojectId(projectId : Text, userId : Text) : async () {
+    return await Userfunction.addprojectId(db, projectId, userId);
+  };
 
 };

@@ -4,7 +4,6 @@ import {
   View,
   Text,
   ToastAndroid,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import { login } from "../declarations/login";
@@ -12,8 +11,7 @@ import { login } from "../declarations/login";
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
 import { setItem,getItem } from '../helper';
-
-
+import { saveUserData } from '../helper';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -21,18 +19,15 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isLogin, setisLogin] = useState(false);
 
-
-
   console.log('test')
   const checkUserId = async () => {
     const userId = await getItem('userId');
     console.log("helo");
     if (userId) {
-      navigation.navigate('Home');
+      navigation.navigate('Drawer');
       return true;
     }
   };
-
 
   const loginfunc = async () => {
     setisLogin(true);
@@ -50,15 +45,28 @@ const LoginScreen = ({ navigation }) => {
       console.log(userId);
 
       if (status === 'Loginsuccess') {
+        setItem('userId', userId);
+        setItem('userEmail', email);
         ToastAndroid.show('login success',ToastAndroid.SHORT);
-        await setItem('userId', userId);
-        navigation.navigate("Home");
+        navigation.navigate("Drawer");
+        const userDetail= await login.getuserdetail(userId);
+        
+        saveUserData(userDetail);
+       
+        
         setisLogin(false);
+        // if(userDetail===" "){
+        //   await saveUserData(userDetail);
+        //   navigation.navigate("Drawer");
+        //   setisLogin(false);
+        // }else{
+        //   navigation.navigate("TakeDetails");
+        //   setisLogin(false);
+        // }   
       }
     } catch (error) {
       setisLogin(false);
       console.log(error);
-
     }
   }
   useEffect(() => {
@@ -88,8 +96,6 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={setEmail}
           keyboardType="email-address"
         />
-
-
         <InputField
           label={'Password'}
           inputType="password"
@@ -97,9 +103,7 @@ const LoginScreen = ({ navigation }) => {
           fieldButtonLabel={"Forgot?"}
           fieldButtonFunction={() => { }}
         />
-
         <CustomButton label={"Login"} onPress={loginfunc} disabled={isLogin} />
-
         <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
           Or, login with ...
         </Text>
