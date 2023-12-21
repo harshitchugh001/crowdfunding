@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
-    Dimensions,
+    StyleSheet,
     Image,
     TextInput,
     ToastAndroid,
     Button,
-    StyleSheet,
     ScrollView,
     Alert,
+    BackHandler,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getItem, saveUserData } from '../helper';
 import { login } from "../declarations/login";
 import CustomButton from '../components/CustomButton';
-
-
-const { width } = Dimensions.get('screen');
 
 export default function TakeUserDetailScreen() {
     const navigation = useNavigation();
@@ -35,9 +32,31 @@ export default function TakeUserDetailScreen() {
         linkedInid: '',
     });
 
+    useEffect(() => {
+        const backAction = () => {
+            Alert.alert("Hold on!", " Your details will not be saved. Enter Your Details ! its Mandatory", [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: "cancel",
+                },
+                { text: "OK", onPress: () => null }
+            ]);
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, [navigation]);
+
     const handleInputChange = (field, value) => {
         setFormData({ ...formData, [field]: value });
     };
+
 
     const handleSubmit = async () => {
         if (
@@ -81,18 +100,19 @@ export default function TakeUserDetailScreen() {
                     console.log("hello");
                     setisSubmit(false);
                     navigation.navigate('Drawer');
-                    
+
                 }
-                else{
+                else {
                     setisSubmit(false);
                 }
-            }catch(error){
+            } catch (error) {
                 setisSubmit(false);
                 console.log(error);
-                
+
             }
         }
     };
+
 
     return (
         <ScrollView contentContainerStyle={styles.container} style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -188,7 +208,7 @@ export default function TakeUserDetailScreen() {
             </View>
             <CustomButton label={"Submit"} onPress={handleSubmit} disabled={isSubmit} />
 
-            <Button title="Submit" onPress={handleSubmit} disabled={isSubmit} />
+            {/* <Button title="Submit" onPress={handleSubmit} disabled={isSubmit} /> */}
         </ScrollView>
     );
 }
@@ -211,7 +231,7 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     userImageContainer: {
-        alignItems: 'center', 
+        alignItems: 'center',
     },
     userImg: {
         width: 110,

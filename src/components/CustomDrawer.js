@@ -14,7 +14,7 @@ import {
 } from '@react-navigation/drawer';
 
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import {removeItem } from '../helper';
+import {removeItem,removeUserData } from '../helper';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -29,6 +29,7 @@ const CustomDrawer = props => {
     const handleLogout = async  () => {
         console.log("logout");
         await removeItem('userId');
+        await removeUserData();
     
         navigation.navigate('Login');
         

@@ -50,8 +50,10 @@ const LoginScreen = ({ navigation }) => {
         ToastAndroid.show('login success',ToastAndroid.SHORT);
         navigation.navigate("Drawer");
         const userDetail= await login.getuserdetail(userId);
+        if(userDetail && userDetail.length>0){
+          saveUserData(userDetail[0]);
+        }
         
-        saveUserData(userDetail);
        
         
         setisLogin(false);

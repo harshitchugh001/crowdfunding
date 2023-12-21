@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { getItem,getUserData} from '../helper';
+import { getItem,saveUserData} from '../helper';
 import { login } from "../declarations/login";
 
 export default function HomeScreen({navigation}) {
@@ -22,6 +22,7 @@ export default function HomeScreen({navigation}) {
     // console.log("test",usertest); 
     const userId = await getItem('userId');
     const userDetail= await login.getuserdetail(userId);
+    await saveUserData(userDetail);
     console.log("home screen",userDetail);
     if (userDetail && userDetail.length > 0) {
       console.log("details present");

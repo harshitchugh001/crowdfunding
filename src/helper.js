@@ -53,6 +53,15 @@ export const getUserData = async () => {
   }
 };
 
+export const removeUserData = async () => {
+  try {
+    await removeItem('userData');
+  } catch (error) {
+    console.error('Error removing user data from AsyncStorage:', error);
+    return null;
+  }
+};
+
 
 
 
