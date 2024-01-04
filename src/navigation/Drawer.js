@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Investment from '../screens/InvestmentsScreen';
 import ProfileDisplay from '../screens/ProfiledisplayScreen';
 import Projects from '../screens/ProjectsScreen'; 
-import TakeUserDetailScreen from '../screens/TakeUserDetailScreen';
+// import TakeUserDetailScreen from '../screens/TakeUserDetailScreen';
 
 
 const Drawer = createDrawerNavigator();
@@ -44,7 +44,7 @@ const DrawerNavigator = () => {
         name="Projects"
         component={Projects}
         options={{
-          title: 'Projects',
+          title: 'Your Projects',
           drawerIcon: ({ focused, color, size }) => (
             <Icon name="paperclip" size={18} color={color} />
           ),
@@ -71,7 +71,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name='Demo'
         component={TakeUserDetailScreen}
         options={{
@@ -80,7 +80,7 @@ const DrawerNavigator = () => {
             <Icon name="user" size={18} color={color} />
           ),
         }}
-      />
+      /> */}
 
      
 

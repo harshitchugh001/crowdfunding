@@ -90,12 +90,12 @@ export default function TakeUserDetailScreen() {
                 linkedInid: formData.linkedInid,
             }
             try {
+                await saveUserData(userData);
                 const userDetail = await login.userdetail(userid, userData);
-
+                
                 console.log(userDetail);
                 console.log(userData);
                 if (userDetail === "user details saved") {
-                    await saveUserData(userData);
                     ToastAndroid.show('user details saved', ToastAndroid.SHORT);
                     console.log("hello");
                     setisSubmit(false);
