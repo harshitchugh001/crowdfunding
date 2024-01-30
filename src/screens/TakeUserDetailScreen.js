@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getItem, saveUserData } from '../helper';
 import { login } from "../declarations/login";
 import CustomButton from '../components/CustomButton';
+// import { saveUserData } from '../helper';
 
 export default function TakeUserDetailScreen() {
     const navigation = useNavigation();
@@ -97,7 +98,9 @@ export default function TakeUserDetailScreen() {
                 console.log(userData);
                 if (userDetail === "user details saved") {
                     ToastAndroid.show('user details saved', ToastAndroid.SHORT);
-                    console.log("hello");
+                    saveUserData(userDetail[0]);
+                    console.log(userDetail[0]);
+                    
                     setisSubmit(false);
                     navigation.navigate('Drawer');
 

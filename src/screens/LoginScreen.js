@@ -19,10 +19,10 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isLogin, setisLogin] = useState(false);
 
-  console.log('test')
+  
   const checkUserId = async () => {
     const userId = await getItem('userId');
-    console.log("helo");
+    
     if (userId) {
       navigation.navigate('Drawer');
       return true;

@@ -9,6 +9,7 @@ import Utils "mo:candb/Utils";
 import Buffer "mo:stablebuffer/StableBuffer";
 import Login "./login/login";
 import Product "./product/product";
+import Investment "./investment/investment"
 
 shared ({caller = owner}) actor class IndexCanister() = this {
   /// @required stable variable (Do not delete or change)
@@ -166,5 +167,69 @@ shared ({caller = owner}) actor class IndexCanister() = this {
     newProductCanisterId;
   };
 
+
+
+//investment canister 
+
+  public shared({caller = caller}) func autoScaleInvestmentCanister(pk: Text): async Text {
+    // Auto-Scaling Authorization - if the request to auto-scale the partition is not coming from an existing canister in the partition, reject it
+    if (Utils.callingCanisterOwnsPK(caller, pkToCanisterMap, pk)) {
+      Debug.print("creating an additional canister for pk=" # pk);
+      await createInvestmentCanister(pk, ?[owner, Principal.fromActor(this)])
+    } else {
+      throw Error.reject("not authorized");
+    };
+  };
+
+   public shared({caller = creator}) func createInvestmentCanisterByGroup(group: Text): async ?Text {
+    let pk = "group#" # group;
+    let canisterIds = getCanisterIdsIfExists(pk);
+    if (canisterIds == []) {
+      ?(await createInvestmentCanister(pk, ?[owner, Principal.fromActor(this)]));
+    // the partition already exists, so don't create a new canister
+    } else {
+      Debug.print(pk # " already exists");
+      null 
+    };
+  };
+
+
+
+
+  // Spins up a new Login canister with the provided pk and controllers
+  func createInvestmentCanister(pk: Text, controllers: ?[Principal]): async Text {
+    Debug.print("creating new Product canister with pk=" # pk);
+    // Pre-load 300 billion cycles for the creation of a new Product canister
+    // Note that canister creation costs 100 billion cycles, meaning there are 200 billion
+    // left over for the new canister when it is created
+    Cycles.add(300_000_000_000);
+    let newInvestmentCanister = await Investment.Investment({
+      partitionKey = pk;
+      scalingOptions = {
+        autoScalingHook = autoScaleInvestmentCanister;
+        sizeLimit = #heapSize(475_000_000); // Scale out at 475MB
+        // for auto-scaling testing
+        //sizeLimit = #count(3); // Scale out at 3 entities inserted
+      };
+      owners = controllers;
+    });
+    let newInvestmentCanisterPrincipal = Principal.fromActor(newInvestmentCanister);
+    await CA.updateCanisterSettings({
+      canisterId = newInvestmentCanisterPrincipal;
+      settings = {
+        controllers = controllers;
+        compute_allocation = ?0;
+        memory_allocation = ?0;
+        freezing_threshold = ?2592000;
+      }
+    });
+
+    let newInvestmentCanisterId = Principal.toText(newInvestmentCanisterPrincipal);
+    // After creating the new Product  canister, add it to the pkToCanisterMap
+    pkToCanisterMap := CanisterMap.add(pkToCanisterMap, pk, newInvestmentCanisterId);
+
+    Debug.print("new Investment canisterId=" # newInvestmentCanisterId);
+    newInvestmentCanisterId;
+  };
 
 }

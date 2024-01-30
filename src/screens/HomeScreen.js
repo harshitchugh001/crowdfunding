@@ -24,9 +24,8 @@ export default function HomeScreen({ navigation }) {
     const userId = await getItem('userId');
     const userDetail = await login.getuserdetail(userId);
     await saveUserData(userDetail);
-    console.log("home screen", userDetail);
+    
     if (userDetail && userDetail.length > 0) {
-      console.log("details present");
       setUserData(userDetail[0]);
 
     } else {
